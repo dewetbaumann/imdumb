@@ -85,8 +85,6 @@ Se han integrado herramientas para automatizar el ciclo de desarrollo:
   - Ubicación: `.github/PULL_REQUEST_TEMPLATE.md`.
   - **Ejemplo de referencia**: [Pull Request #1 - Actualización de documentación](https://github.com/dewetbaumann/imdumb/pull/1)
 
-- **Estrategia Micro-Frontend y Versionado**:
-  - El proyecto adopta una arquitectura de estilo **Micro-Frontend** modularizando capacidades a través de paquetes independientes (ej: `imdumb_dependencies`).
   - Cada módulo (app principal y paquetes satélite) tiene su propio ciclo de vida y versionado mediante **Tags** de Git.
   - El despliegue es atómico: crear un tag en cualquiera de los repositorios desencadena su pipeline específico de CI/CD para release y publicación.
 
@@ -101,7 +99,8 @@ La integración de Firebase en este proyecto sigue principios SOLID y patrones d
 - **Repository Pattern**: `ConfigService` abstrae la implementación de Firebase, permitiendo fácilmente intercambiar con mocks o alternativas.
 - **Dependency Injection**: `ConfigService` recibe `SharedPreferences` como dependencia inyectada a través de Riverpod.
 - **Single Responsibility**: El servicio solo maneja obtención y cacheo de configuración.
-
+- **Micro-Frontend**:
+  - El proyecto adopta una arquitectura de estilo **Micro-Frontend** modularizando capacidades a través de paquetes independientes (ej: `imdumb_dependencies`). https://github.com/dewetbaumann/imdumb_dependencies
 ### Error Handling y Resilencia
 - **Graceful Degradation**: Si Firebase no está disponible, la app continúa funcionando con valores en caché.
 - **Fallback Strategies**: 
