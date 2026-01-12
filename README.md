@@ -26,7 +26,7 @@ Se ha implementado **Clean Architecture** dividida en 3 capas principales:
 - **Persistence**: SharedPreferences
 - **Backend/Config**: Firebase (Remote Config, Analytics stubbed)
 - **UI Utils**: Flutter Carousel Widget, Cached Network Image, Overlay Support
-- **Logging/Utility**: `print_map` (Autoría Propia) - Herramienta para formatear logs de mapas/JSON.
+- **Logging/Utility**: `print_map` (Autoría propia) - Herramienta para formatear logs de mapas/JSON.
   - [Documentación GitHub](https://github.com/dewetbaumann/dart-print-map/blob/main/README.md)
   - [Paquete Pub.dev](https://pub.dev/packages/print_map)
 
@@ -69,6 +69,7 @@ Se han integrado herramientas para automatizar el ciclo de desarrollo:
 - **Pull Request Template**:
   - Se ha incluido una plantilla predefinida para estandarizar las descripciones de los Pull Requests.
   - Ubicación: `.github/PULL_REQUEST_TEMPLATE.md`.
+  - **Ejemplo de referencia**: [Pull Request #1 - Actualización de documentación](https://github.com/dewetbaumann/imdumb/pull/1)
 
 - **Estrategia Micro-Frontend y Versionado**:
   - El proyecto adopta una arquitectura de estilo **Micro-Frontend** modularizando capacidades a través de paquetes independientes (ej: `imdumb_dependencies`).
