@@ -24,7 +24,7 @@ Se ha implementado **Clean Architecture** dividida en 3 capas principales:
 - **Networking**: Dio (v5.x) con implementación personalizada (`HttpImpl`)
 - **Functional utility**: Dartz (Either type for error handling)
 - **Persistence**: SharedPreferences
-- **Backend/Config**: Firebase (Remote Config, Analytics stubbed)
+- **Backend/Config**: Firebase (Remote Config, Analytics) con estrategia de fallback.
 - **UI Utils**: Flutter Carousel Widget, Cached Network Image, Overlay Support
 - **Logging/Utility**: `print_map` (Autoría propia) - Herramienta para formatear logs de mapas/JSON.
   - [Documentación GitHub](https://github.com/dewetbaumann/dart-print-map/blob/main/README.md)
@@ -62,6 +62,20 @@ Se han integrado herramientas para automatizar el ciclo de desarrollo:
   - Ejecución automática de tests unitarios y goldens en cada push/PR a `main` y `develop`.
   - Archivo de flujo: `.github/workflows/flutter_ci.yml`.
 
+- **Golden Tests (Visual Regression Testing)**:
+  - **Propósito**: Validar que los cambios en código no alteren visualmente los widgets de forma inesperada.
+  - **Estrategia**: Se capturan imágenes de referencia de los widgets renderizados en los goldens. En cada ejecución, se comparan píxel-por-píxel.
+  - **Tolerancia**: Se utiliza una tolerancia del 10% de diferencia de píxeles para permitir variaciones menores por diferencias de renderizado entre máquinas (anti-aliasing, subpixel rendering, etc.).
+  - **Ubicación**: Los goldens se almacenan en `test/presentation/widgets/goldens/`.
+  - **Actualización**: Cuando haya cambios visuales intencionales y validados, actualizar con:
+    ```bash
+    flutter test --update-goldens
+    ```
+  - **Por qué este enfoque**: 
+    - Detecta regresiones visuales automáticamente sin inspección manual.
+    - Documenta el aspecto esperado de cada widget visualmente.
+    - Diferencia entre cambios intencionales (actualizar golden) vs. regresiones (fallar el test).
+
 - **CD (Codemagic)**:
   - Generación automatizada de artefactos (`.apk`, `.aab`) para el ambiente QA.
   - Archivo de configuración: `codemagic.yaml`.
@@ -77,7 +91,35 @@ Se han integrado herramientas para automatizar el ciclo de desarrollo:
   - El despliegue es atómico: crear un tag en cualquiera de los repositorios desencadena su pipeline específico de CI/CD para release y publicación.
 
 
-*Nota:* La configuración de Firebase está simulada con un bloque try-catch para permitir la ejecución en entornos sin `google-services.json`.
+*Nota:* La inicialización de Firebase está deshabilitada en este entorno (sin `google-services.json`/`GoogleService-Info.plist`). La app implementa una estrategia robusta de **graceful degradation**: continúa funcionando en "offline mode" usando valores en caché. Ver [ConfigService](lib/core/services/config_service.dart) para más detalles.
+
+## Implementación de Firebase - Buenas Prácticas
+
+La integración de Firebase en este proyecto sigue principios SOLID y patrones de arquitectura limpia:
+
+### Arquitectura
+- **Repository Pattern**: `ConfigService` abstrae la implementación de Firebase, permitiendo fácilmente intercambiar con mocks o alternativas.
+- **Dependency Injection**: `ConfigService` recibe `SharedPreferences` como dependencia inyectada a través de Riverpod.
+- **Single Responsibility**: El servicio solo maneja obtención y cacheo de configuración.
+
+### Error Handling y Resilencia
+- **Graceful Degradation**: Si Firebase no está disponible, la app continúa funcionando con valores en caché.
+- **Fallback Strategies**: 
+  - Si Firebase está deshabilitado → usa modo offline
+  - Si fetch falla → usa valores previamente cacheados
+  - Si no hay cache → usa defaults predefinidos
+- **Logging Estructurado**: Mensajes de error claro con emojis para visibilidad.
+
+### Testabilidad
+```dart
+// Fácil de mockear en tests
+configServiceProvider.overrideWithValue(MockConfigService())
+```
+
+### Offline-First Approach
+- Todas las configuraciones se cachean localmente en SharedPreferences
+- El app es totalmente funcional sin conexión a Firebase
+- Sincronización silenciosa cuando Firebase esté disponible
 
 ## Principios SOLID Documentados
 

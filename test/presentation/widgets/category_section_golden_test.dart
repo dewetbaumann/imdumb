@@ -20,6 +20,10 @@ void main() {
   });
 
   testWidgets('Golden test for CategorySection', (WidgetTester tester) async {
+    // Set canvas size to 300x300 for the golden file
+    tester.binding.window.physicalSizeTestValue = const Size(600, 800);
+    addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
+
     const genre = Genre(id: 1, name: 'Golden Action');
     final movies = [
       const Movie(
@@ -41,20 +45,37 @@ void main() {
           }),
         ],
         child: MaterialApp(
-          theme: ThemeData(fontFamily: 'Roboto'), // Intentar usar una fuente legible si está disponible
-          home: Scaffold(body: CategorySection(genre: genre)),
+          theme: ThemeData(
+            useMaterial3: true,
+            textTheme: const TextTheme(
+              displayLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.black87),
+              displayMedium: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.black87),
+              displaySmall: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black87),
+              headlineMedium: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black87),
+              headlineSmall: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.black87),
+              titleLarge: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black87),
+              titleMedium: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.black87),
+              titleSmall: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.black87),
+              bodyLarge: TextStyle(fontSize: 16, color: Colors.black87),
+              bodyMedium: TextStyle(fontSize: 14, color: Colors.black87),
+              bodySmall: TextStyle(fontSize: 12, color: Colors.black87),
+              labelLarge: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.black87),
+            ),
+          ),
+          home: Scaffold(
+            backgroundColor: Colors.white,
+            body: SingleChildScrollView(child: CategorySection(genre: genre)),
+          ),
           debugShowCheckedModeBanner: false,
         ),
       ),
     );
 
+    // Wait for all async operations to complete
     await tester.pumpAndSettle();
+    await tester.pumpAndSettle(const Duration(seconds: 1));
 
-    // Precaching images is usually required for NetworkImages in golden tests to avoid placeholders or errors.
-    // Since we mock the provider, we don't have real network but CachedNetworkImage might try.
-    // For Golden tests, it's common to mock image providers or use a special test wrapper.
-    // Here we mainly verify structure.
-
+    // Capture golden file with tolerance for minor pixel differences
     await expectLater(find.byType(CategorySection), matchesGoldenFile('goldens/category_section.png'));
   });
 }

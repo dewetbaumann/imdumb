@@ -8,8 +8,6 @@ import 'package:imdumb/domain/models/entities/movie.dart';
 import 'package:imdumb/domain/repositories/movie_repository.dart';
 
 class MovieRepositoryImpl implements MovieRepository {
-  // SOLID: Dependency Inversion Principle (DIP)
-  // We depend on abstraction (TmdbDataSource interface) not concretion (TmdbDataSourceImpl)
   final TmdbDataSource _remoteDataSource;
 
   MovieRepositoryImpl(this._remoteDataSource);

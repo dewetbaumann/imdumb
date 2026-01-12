@@ -94,8 +94,6 @@ class DetailScreen extends ConsumerWidget {
   }
 
   Widget _buildCarousel(Movie movieData) {
-    // SOLID: Open/Closed Principle - We can extend images list without changing logic
-    // Using simple list for now
     final images = [movieData.backdropPath, movieData.posterPath].where((e) => e.isNotEmpty).toList();
 
     if (images.isEmpty) {

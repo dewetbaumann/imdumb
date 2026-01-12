@@ -12,12 +12,7 @@ void main() async {
   final prefs = await SharedPreferences.getInstance();
   final packageInfo = await PackageInfo.fromPlatform();
 
-  // Try Initialize Firebase (Mocked for this challenge environment)
-  // try {
-  //   await Firebase.initializeApp();
-  // } catch (e) {
-  //   print("Firebase Init skipped: $e");
-  // }
+  // await Firebase.initializeApp();
 
   runApp(
     ProviderScope(
