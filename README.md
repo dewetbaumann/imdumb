@@ -26,6 +26,9 @@ Se ha implementado **Clean Architecture** dividida en 3 capas principales:
 - **Persistence**: SharedPreferences
 - **Backend/Config**: Firebase (Remote Config, Analytics stubbed)
 - **UI Utils**: Flutter Carousel Widget, Cached Network Image, Overlay Support
+- **Logging/Utility**: `print_map` (Autoría Propia) - Herramienta para formatear logs de mapas/JSON.
+  - [Documentación GitHub](https://github.com/dewetbaumann/dart-print-map/blob/main/README.md)
+  - [Paquete Pub.dev](https://pub.dev/packages/print_map)
 
 ## Instalación y Ejecución
 

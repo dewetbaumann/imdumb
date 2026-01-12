@@ -57,9 +57,7 @@ class FlavorBanner extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final packageInfo = ref.watch(packageInfoProvider);
     final packageName = packageInfo.packageName;
-    // QA builds have ".qa" suffix in applicationId
     final isQA = packageName.endsWith('.qa');
-
     if (!isQA) return child;
 
     return Directionality(
