@@ -6,9 +6,6 @@ import 'package:imdumb/presentation/providers/home_providers.dart';
 import 'package:imdumb/presentation/screens/detail/detail_screen.dart';
 
 class CategorySection extends ConsumerWidget {
-  // SOLID: Single Responsibility Principle (SRP)
-  // This widget is responsible ONLY for displaying a single genre category and its horizontal list.
-  // It delegates fetching data to the provider and doesn't handle full page layout.
   final Genre genre;
 
   const CategorySection({super.key, required this.genre});
@@ -61,7 +58,11 @@ class CategorySection extends ConsumerWidget {
                             movie.title,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(fontWeight: FontWeight.w500),
+                            style:
+                                Theme.of(
+                                  context,
+                                ).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w500, color: Colors.black87) ??
+                                const TextStyle(fontWeight: FontWeight.w500, color: Colors.black87),
                           ),
                         ],
                       ),

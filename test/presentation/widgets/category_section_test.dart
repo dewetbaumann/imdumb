@@ -34,7 +34,6 @@ void main() {
       ),
     );
 
-    // Initial loading state might be fast or instant if using overrideWith synchronous-like future
     await tester.pumpAndSettle();
 
     expect(find.text('Action'), findsOneWidget);
@@ -59,11 +58,10 @@ void main() {
       ),
     );
 
-    await tester.pump(); // Start api call
+    await tester.pump();
 
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
 
-    // Finish
     await tester.pump(const Duration(seconds: 3));
   });
 }

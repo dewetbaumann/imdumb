@@ -12,12 +12,7 @@ void main() async {
   final prefs = await SharedPreferences.getInstance();
   final packageInfo = await PackageInfo.fromPlatform();
 
-  // Try Initialize Firebase (Mocked for this challenge environment)
-  // try {
-  //   await Firebase.initializeApp();
-  // } catch (e) {
-  //   print("Firebase Init skipped: $e");
-  // }
+  // await Firebase.initializeApp();
 
   runApp(
     ProviderScope(
@@ -57,9 +52,7 @@ class FlavorBanner extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final packageInfo = ref.watch(packageInfoProvider);
     final packageName = packageInfo.packageName;
-    // QA builds have ".qa" suffix in applicationId
     final isQA = packageName.endsWith('.qa');
-
     if (!isQA) return child;
 
     return Directionality(

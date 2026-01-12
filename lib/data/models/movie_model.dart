@@ -1,9 +1,6 @@
 import 'package:imdumb/domain/models/entities/movie.dart';
 
 class MovieModel extends Movie {
-  // SOLID: Liskov Substitution Principle (LSP)
-  // MovieModel extends Movie, ensuring it can be used interchangeably anywhere a Movie entity is expected
-  // without breaking the application logic.
   MovieModel({
     required super.id,
     required super.title,
