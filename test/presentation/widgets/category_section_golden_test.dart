@@ -20,30 +20,34 @@ void main() {
   });
 
   testWidgets('Golden test for CategorySection', (WidgetTester tester) async {
-    // Set canvas size to 300x300 for the golden file
     tester.binding.window.physicalSizeTestValue = const Size(600, 800);
     addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
 
-    const genre = Genre(id: 1, name: 'Golden Action');
+    const genre = Genre(id: 1, name: 'Action Movies');
     final movies = [
       const Movie(
         id: 1,
-        title: 'Golden Movie',
+        title: 'Movie One',
         posterPath: '/p1.jpg',
         backdropPath: '/b1.jpg',
-        voteAverage: 8.0,
-        overview: 'Overview 1',
+        voteAverage: 8.5,
+        overview: 'First movie overview',
         releaseDate: '2023-01-01',
+      ),
+      const Movie(
+        id: 2,
+        title: 'Movie Two',
+        posterPath: '/p2.jpg',
+        backdropPath: '/b2.jpg',
+        voteAverage: 7.8,
+        overview: 'Second movie overview',
+        releaseDate: '2023-02-01',
       ),
     ];
 
     await tester.pumpWidget(
       ProviderScope(
-        overrides: [
-          moviesByGenreProvider(1).overrideWith((ref) async {
-            return movies;
-          }),
-        ],
+        overrides: [moviesByGenreProvider(1).overrideWithValue(AsyncValue.data(movies))],
         child: MaterialApp(
           theme: ThemeData(
             useMaterial3: true,
@@ -71,11 +75,10 @@ void main() {
       ),
     );
 
-    // Wait for all async operations to complete
+    // Wait for async operations
     await tester.pumpAndSettle();
-    await tester.pumpAndSettle(const Duration(seconds: 1));
 
-    // Capture golden file with tolerance for minor pixel differences
+    // Capture golden file
     await expectLater(find.byType(CategorySection), matchesGoldenFile('goldens/category_section.png'));
   });
 }

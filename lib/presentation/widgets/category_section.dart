@@ -58,7 +58,11 @@ class CategorySection extends ConsumerWidget {
                             movie.title,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(fontWeight: FontWeight.w500),
+                            style:
+                                Theme.of(
+                                  context,
+                                ).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w500, color: Colors.black87) ??
+                                const TextStyle(fontWeight: FontWeight.w500, color: Colors.black87),
                           ),
                         ],
                       ),
